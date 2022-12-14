@@ -1,2 +1,6 @@
+= render 'shared/errors', resource: @answer
 h1= @question.title
 p= @question.body
+= render 'answers/form', resource_model: [@answer], question: @question
+-@question.answers.each do |answer|
+  p= answer.body

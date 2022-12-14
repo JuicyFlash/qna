@@ -1,15 +1,26 @@
 class QuestionsController < ApplicationController
-  before_action :authenticate_user!, except: %i[index show]
-  before_action :load_question, only: %i[show edit update destroy]
+  before_action :authenticate_user!, except: %i[index show answer]
+  before_action :load_question, only: %i[show edit update destroy answer]
 
   def index
     @questions = Question.all
   end
 
-  def show; end
+  def show
+    @answer = Answer.new
+  end
 
   def new
     @question = Question.new
+  end
+
+  def answer
+    @answer = @question.answers.new(answer_params)
+    if @answer.save
+      redirect_to @question, notice: 'Your answer successfully created.'
+    else
+      render :show
+    end
   end
 
   def edit; end
@@ -44,5 +55,9 @@ class QuestionsController < ApplicationController
 
   def question_params
     params.require(:question).permit(:title, :body)
+  end
+
+  def answer_params
+    params.require(:answer).permit( :body)
   end
 end

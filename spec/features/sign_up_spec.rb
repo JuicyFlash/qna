@@ -9,7 +9,6 @@ feature 'User can sign up' do
   end
 
   describe 'with correct params' do
-
     scenario 'tries sign up' do
       fill_in 'Email', with: "unregistered_#{user.email}"
       fill_in 'Password', with: user.password
@@ -28,6 +27,7 @@ feature 'User can sign up' do
       expect(page).to have_content 'Email has already been taken'
     end
   end
+
   describe 'with incorrect params' do
     scenario 'tries sign up with blank email' do
       fill_in 'Password', with: user.password

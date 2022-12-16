@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 feature 'User can view list of questions' do
-  given!(:questions) { create_list(:question, 3, :different) }
+  given(:user) { create(:user) }
+
+  given!(:questions) { create_list(:question, 3, :different, author: user) }
 
   scenario 'view list of questions' do
     visit questions_path

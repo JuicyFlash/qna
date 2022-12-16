@@ -6,6 +6,7 @@ FactoryBot.define do
 
   factory :answer do
     association :question
+    association :author_id, factory: :user
 
     body { "MyString" }
 

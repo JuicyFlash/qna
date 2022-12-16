@@ -16,6 +16,7 @@ class QuestionsController < ApplicationController
 
   def answer
     @answer = @question.answers.new(answer_params)
+    @answer.author_id = current_user.id
     if @answer.save
       redirect_to @question, notice: 'Your answer successfully created.'
     else
@@ -26,7 +27,7 @@ class QuestionsController < ApplicationController
   def edit; end
 
   def create
-    @question = Question.new(question_params)
+    @question = current_user.questions.new(question_params)
     if @question.save
       redirect_to @question, notice: 'Your question successfully created'
     else
@@ -43,8 +44,12 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-    @question.destroy
-    redirect_to questions_path
+    if @question.author_id == current_user.id
+      @question.destroy
+      redirect_to questions_path, notice: 'Your question successfully deleted.'
+    else
+      redirect_to questions_path, notice: 'Only author can delete question.'
+    end
   end
 
   private
@@ -58,6 +63,6 @@ class QuestionsController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit( :body)
+    params.require(:answer).permit(:body)
   end
 end

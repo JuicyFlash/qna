@@ -1,10 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) { create(:question) }
+
   let(:user) { create(:user) }
+  let(:question) { create(:question, author: user) }
+
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 3) }
+    let(:questions) { create_list(:question, 3, author: user) }
     before { get :index }
 
     it 'populates an array of all questions' do
@@ -105,10 +107,18 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'DELETE #destroy' do
     before { login(user) }
-    let!(:question) { create(:question) }
+    let!(:question) { create(:question, author: user) }
+
     it 'delete the question' do
       expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
     end
+
+    it 'not delete if user is not author of @question' do
+      not_author = create(:user)
+      login(not_author)
+      expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(0)
+    end
+
     it 'redirect to index' do
       delete :destroy, params: { id: question }
       expect(response).to redirect_to questions_path
@@ -116,8 +126,9 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #answer' do
+    before { login(user) }
     context 'with valid attributes' do
-      let(:answer) { create(:answer, question: question) }
+      let(:answer) { create(:answer, question: question, author: user) }
       it '@question is a parent @answer' do
         post :answer, params: { id: question, answer: attributes_for(:answer) }
         expect(assigns(:answer).question).to eq(question)

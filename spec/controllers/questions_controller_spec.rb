@@ -1,9 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) { create(:question) }
+
+  let(:user) { create(:user) }
+  let(:question) { create(:question, author: user) }
+
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 3) }
+    let(:questions) { create_list(:question, 3, author: user) }
     before { get :index }
 
     it 'populates an array of all questions' do
@@ -26,7 +29,9 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'GET #new' do
+    before { login(user) }
     before { get :new }
+
     it 'assign a new Question to @question' do
       expect(assigns(:question)).to be_a_new(Question)
     end
@@ -35,7 +40,8 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'GET #show' do
+  describe 'GET #edit' do
+    before { login(user) }
     before { get :edit, params: { id: question } }
 
     it 'assign requested question to @question' do
@@ -47,6 +53,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'POST #create' do
+    before { login(user) }
     context 'with valid attributes' do
       it 'save a new question in database' do
         expect { post :create, params: { question: attributes_for(:question) } }.to change(Question, :count).by(1)
@@ -68,6 +75,7 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'PATCH #update' do
+    before { login(user) }
     context 'with valid attributes' do
       it 'assign requested question to @question' do
         patch :update, params: { id: question, question: attributes_for(:question) }
@@ -98,13 +106,45 @@ RSpec.describe QuestionsController, type: :controller do
   end
 
   describe 'DELETE #destroy' do
-    let!(:question) { create(:question) }
+    before { login(user) }
+    let!(:question) { create(:question, author: user) }
+
     it 'delete the question' do
       expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
     end
+
+    it 'not delete if user is not author of @question' do
+      not_author = create(:user)
+      login(not_author)
+      expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(0)
+    end
+
     it 'redirect to index' do
       delete :destroy, params: { id: question }
       expect(response).to redirect_to questions_path
+    end
+  end
+
+  describe 'POST #answer' do
+    before { login(user) }
+    context 'with valid attributes' do
+      let(:answer) { create(:answer, question: question, author: user) }
+      it '@question is a parent @answer' do
+        post :answer, params: { id: question, answer: attributes_for(:answer) }
+        expect(assigns(:answer).question).to eq(question)
+      end
+      it 'save a new answer in database' do
+        expect { post :answer, params: { id: question, answer: attributes_for(:answer) } }.to change(Answer, :count).by(1)
+      end
+      it 'redirect to question view' do
+        post :answer, params: { id: question, answer: attributes_for(:answer) }
+        expect(response).to redirect_to question_path(question)
+      end
+    end
+    context 'with invalid attributes' do
+      it 'does not save new answer' do
+        expect { post :answer, params: { id: question, answer: attributes_for(:answer, :invalid) } }.to_not change(Answer, :count)
+      end
     end
   end
 end

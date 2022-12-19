@@ -1,19 +1,32 @@
 class AnswersController < ApplicationController
+  before_action :authenticate_user!, except: %i[index]
   before_action :find_question, only: %i[index new create]
   before_action :load_answers, only: %i[index]
+  before_action :find_answer, only: %i[destroy]
 
   def index; end
 
   def new
-    @answer = Answer.new
+    @answer = current_user.answers.new
   end
 
   def create
     @answer = @question.answers.new(answer_params)
+    @answer.author_id = current_user.id
     if @answer.save
       redirect_to question_answers_path @question
     else
       render :new
+    end
+  end
+
+  def destroy
+    @question = @answer.question
+    if @answer.author_id == current_user.id
+      @answer.destroy
+      redirect_to @question, notice: 'Your answer successfully deleted.'
+    else
+      redirect_to @question, notice: 'Only author can delete answer.'
     end
   end
 
@@ -23,6 +36,10 @@ class AnswersController < ApplicationController
     params.require(:answer).permit(:body)
   end
 
+  def find_answer
+    @answer = Answer.find(params[:id])
+  end
+
   def find_question
     @question = Question.find(params[:question_id])
   end
@@ -30,4 +47,5 @@ class AnswersController < ApplicationController
   def load_answers
     @answers = @question.answers
   end
+
 end

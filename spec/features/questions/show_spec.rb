@@ -19,8 +19,10 @@ feature 'User can view question',
   scenario 'view list of questions`s answers' do
     visit question_path(question)
 
-    expect(page).to have_content question.answers[0].body
-    expect(page).to have_content question.answers[1].body
-    expect(page).to have_content question.answers[2].body
+    within '.answers' do
+      expect(page).to have_content question.answers[0].body
+      expect(page).to have_content question.answers[1].body
+      expect(page).to have_content question.answers[2].body
+    end
   end
 end

@@ -13,15 +13,15 @@ feature 'User can answer to a question', '
       visit question_path(question)
     end
 
-    scenario 'answer to a question' do
+    scenario 'answer to a question', js: true do
+
       fill_in 'Body', with: 'some answer'
       click_on 'Answer'
 
-      expect(page).to have_content 'Your answer successfully created.'
       expect(page).to have_content 'some answer'
     end
 
-    scenario 'answer to a question with errors' do
+    scenario 'answer to a question with errors', js: true do
       click_on 'Answer'
 
       expect(page).to have_content "Body can't be blank"

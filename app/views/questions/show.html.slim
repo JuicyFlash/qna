@@ -1,8 +1,8 @@
-= render 'shared/errors', resource: @answer
+.answer-errors
+  = render 'shared/errors', resource: @answer
 h1= @question.title
 p= @question.body
 = render 'answers/form', resource_model: [@answer], question: @question
 .answers
-  -@question.answers.find_each do |answer|
-    p= answer.body
-    p= button_to 'Delete answer', answer_path(answer), { method: :delete }
+  p= render @question.answers
+

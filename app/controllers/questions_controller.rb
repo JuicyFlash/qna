@@ -15,13 +15,9 @@ class QuestionsController < ApplicationController
   end
 
   def answer
-    @answer = @question.answers.new(answer_params)
+    @answer = @question.answers.create(answer_params)
     @answer.author_id = current_user.id
-    if @answer.save
-      redirect_to @question, notice: 'Your answer successfully created.'
-    else
-      render :show
-    end
+    @answer.save
   end
 
   def edit; end

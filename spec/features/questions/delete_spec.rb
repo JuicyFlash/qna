@@ -24,16 +24,14 @@ feature 'User can delete question', '
       not_author = create(:user)
       sign_in(not_author)
       visit questions_path
-      click_on 'Delete question'
 
-      expect(page).to have_content 'Only author can delete question.'
+      expect(page).to_not have_link 'Delete question'
     end
   end
 
   scenario 'unauthenticated user try delete question' do
     visit questions_path
-    click_on 'Delete question'
 
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to_not have_link 'Delete question'
   end
 end

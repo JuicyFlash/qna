@@ -4,11 +4,8 @@ RSpec.describe AnswersController, type: :controller do
 
   let(:user) { create(:user) }
 
-  let(:question) do
-    create(:question, author: user) do |question|
-      create(:answer, question: question, author: user)
-    end
-  end
+  let(:question) { create(:question, author: user) }
+  let(:answer){ create(:answer, question: question, author: user) }
 
   describe 'GET #index' do
     before { get :index, params: { question_id: question } }
@@ -47,29 +44,20 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'POST #create' do
     before { login(user) }
-
     context 'with valid attributes' do
+
+      let(:answer) { create(:answer, question: question, author: user) }
       it '@question is a parent @answer' do
-        post :create, params: { question_id: question, answer: attributes_for(:answer) }
+        post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
         expect(assigns(:answer).question).to eq(question)
       end
       it 'save a new answer in database' do
-        question = create(:question, author: user)
-        expect { post :create, params: { question_id: question, answer: attributes_for(:answer) } }.to change(Answer, :count).by(1)
-      end
-      it 'redirect to index view' do
-        post :create, params: { question_id: question, answer: attributes_for(:answer) }
-        expect(response).to redirect_to question_answers_path
+        expect { post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js }.to change(Answer, :count).by(1)
       end
     end
     context 'with invalid attributes' do
       it 'does not save new answer' do
-        question = create(:question, author: user)
-        expect { post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) } }.to_not change(Answer, :count)
-      end
-      it 're-render new view' do
-        post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }
-        expect(response).to render_template :new
+        expect { post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }, format: :js }.to_not change(Answer, :count)
       end
     end
   end

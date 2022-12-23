@@ -2,7 +2,7 @@
   = render 'shared/errors', resource: @answer
 h1= @question.title
 p= @question.body
-= render 'answers/form', resource_model: [@answer], question: @question
+= render 'answers/form', resources: { form_model: [@question, @answer], question: @question, form_class: 'new-answer' }
 .answers
   p= render @question.answers
 

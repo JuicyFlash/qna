@@ -13,11 +13,7 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     @answer.author_id = current_user.id
-    if @answer.save
-      redirect_to question_answers_path @question
-    else
-      render :new
-    end
+    @answer.save
   end
 
   def destroy

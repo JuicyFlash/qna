@@ -125,22 +125,4 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'POST #answer' do
-    before { login(user) }
-    context 'with valid attributes' do
-      let(:answer) { create(:answer, question: question, author: user) }
-      it '@question is a parent @answer' do
-        post :answer, params: { id: question, answer: attributes_for(:answer) }, format: :js
-        expect(assigns(:answer).question).to eq(question)
-      end
-      it 'save a new answer in database' do
-        expect { post :answer, params: { id: question, answer: attributes_for(:answer) }, format: :js }.to change(Answer, :count).by(1)
-      end
-    end
-    context 'with invalid attributes' do
-      it 'does not save new answer' do
-        expect { post :answer, params: { id: question, answer: attributes_for(:answer, :invalid) }, format: :js }.to_not change(Answer, :count)
-      end
-    end
-  end
 end

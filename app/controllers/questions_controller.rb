@@ -14,12 +14,6 @@ class QuestionsController < ApplicationController
     @question = Question.new
   end
 
-  def answer
-    @answer = @question.answers.create(answer_params)
-    @answer.author_id = current_user.id
-    @answer.save
-  end
-
   def edit; end
 
   def create

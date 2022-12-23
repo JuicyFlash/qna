@@ -24,16 +24,14 @@ feature 'User can delete answer', '
       not_author = create(:user)
       sign_in(not_author)
       visit question_path(question)
-      click_on 'Delete answer'
 
-      expect(page).to have_content 'Only author can delete answer'
+      expect(page).to_not have_link 'Delete answer'
     end
   end
 
   scenario 'unauthenticated user try delete answer' do
     visit question_path(question)
-    click_on 'Delete answer'
 
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
+    expect(page).to_not have_link 'Delete answer'
   end
 end

@@ -1,4 +1,4 @@
-= form_with model: resource_model, url: answer_question_path, local: false, class: 'new-answer' do |f|
+= form_with model: resources[:form_model], local: false, class: resources[:form_class] do |f|
   = f.label :body
   = f.text_area :body
   = f.submit 'Answer'

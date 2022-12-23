@@ -1,5 +1,6 @@
 -@questions.each do |question|
   p= link_to question.title, question_path(question)
   -if user_signed_in? && question.author == current_user
-    p= button_to 'Delete question', question_path(question), { method: :delete }
+    p= link_to 'Edit', edit_question_path(question)
+    p= link_to 'Delete question', question_path(question), { method: :delete }
 p= link_to 'Ask question', new_question_path

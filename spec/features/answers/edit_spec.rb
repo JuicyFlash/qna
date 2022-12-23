@@ -42,7 +42,7 @@ feature 'User can edit his answer', '
       expect(page).to have_content "Body can't be blank"
     end
 
-    scenario "tries to edit other user`s question", js: true do
+    scenario "tries to edit other user`s answer", js: true do
       not_author = create(:user)
       sign_in(not_author)
       visit question_path(question)

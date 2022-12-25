@@ -12,9 +12,10 @@ feature 'User can delete answer', '
     scenario 'delete answer and he is author of this answer', js: true do
       sign_in(user)
       visit question_path(question)
-      click_on 'Delete answer'
-
-      expect(page).to_not have_selector '.answers'
+      within '.answers' do
+        click_on 'Delete answer'
+        expect(page).to_not have_content answer.body
+      end
     end
 
     scenario 'delete answer and he isn`t author of this answer', js: true do

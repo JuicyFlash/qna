@@ -18,12 +18,7 @@ class AnswersController < ApplicationController
 
   def destroy
     @question = @answer.question
-    if @answer.author_id == current_user.id
-      @answer.destroy
-      redirect_to @question, notice: 'Your answer successfully deleted.'
-    else
-      redirect_to @question, notice: 'Only author can delete answer.'
-    end
+    @answer.destroy if @answer.author_id == current_user.id
   end
 
   def update

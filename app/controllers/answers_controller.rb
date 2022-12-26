@@ -27,6 +27,20 @@ class AnswersController < ApplicationController
     @question = @answer.question
   end
 
+  def best
+    @answer = Answer.find(params[:id])
+    @question = @answer.question
+    @old_best_answer = @question.best_answer
+    if @question.best_answer_id == @answer.id
+      @question.best_answer_id = nil
+      @best_answer = nil
+    else
+      @question.best_answer_id = @answer.id
+      @best_answer = @answer
+    end
+    @question.save
+  end
+
   private
 
   def answer_params

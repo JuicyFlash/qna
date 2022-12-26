@@ -5,7 +5,7 @@ feature 'User can answer to a question', '
 ' do
   given(:user) { create(:user) }
 
-  given!(:question) { create(:question, author: user) }
+  given!(:question) { create(:question, author: user, best_answer: nil) }
 
   describe 'Authenticated user' do
     background do

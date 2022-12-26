@@ -6,7 +6,7 @@ feature 'User can edit his question', '
   I`d like to be able to edit my question
 ' do
   given(:user) { create(:user) }
-  given!(:question) { create(:question, author: user) }
+  given!(:question) { create(:question, author: user, best_answer: nil) }
 
   scenario 'Unauthenticated user can not edit question' do
     visit questions_path

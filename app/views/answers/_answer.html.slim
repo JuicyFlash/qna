@@ -1,8 +1,9 @@
 -unless answer.id.nil?
-  .answer data-answer-id=answer.id
+  .answer data-answer-id = answer.id
     p= answer.body
     -if user_signed_in? && answer.author == current_user
-      =form_with model: answer, method: :delete, local: false do |f|
-        = f.submit 'Delete answer'
+      p= link_to 'Delete answer', answer, method: :delete, remote: true
       p= link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+    -if user_signed_in? && answer.question.author == current_user
+      p= link_to 'Best',  best_answer_path(answer), method: :patch, remote: true
     = render 'answers/form', resources: { form_model: [answer], form_class: 'hidden', form_html: { id: "edit-answer-#{answer.id}" } }

@@ -6,7 +6,7 @@ feature 'User can edit his answer', '
   I`d like to be able to edit my answer
 ' do
   given(:user) { create(:user) }
-  given!(:question) { create(:question, author: user) }
+  given!(:question) { create(:question, author: user, best_answer: nil) }
   given!(:answer) { create(:answer, question: question, author: user) }
 
   scenario 'Unauthenticated user can not edit answer' do

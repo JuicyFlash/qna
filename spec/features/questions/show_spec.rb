@@ -6,7 +6,7 @@ feature 'User can view question',
   given(:user) { create(:user) }
 
   given!(:question) do
-    create(:question, author: user) do |question|
+    create(:question, author: user, best_answer: nil) do |question|
       create_list(:answer, 3, :different, question: question, author: user)
     end
   end

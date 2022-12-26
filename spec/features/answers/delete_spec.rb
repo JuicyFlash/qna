@@ -4,7 +4,7 @@ feature 'User can delete answer', '
   Only the author can delete his answer
 ' do
   given!(:user) { create(:user) }
-  given!(:question) { create(:question, author: user) }
+  given!(:question) { create(:question, author: user, best_answer: nil) }
   given!(:answer) { create(:answer, question: question, author: user) }
 
 

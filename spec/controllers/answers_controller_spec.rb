@@ -4,14 +4,14 @@ RSpec.describe AnswersController, type: :controller do
 
   let(:user) { create(:user) }
 
-  let(:question) { create(:question, author: user) }
-  let(:answer){ create(:answer, question: question, author: user) }
+  let(:question) { create(:question, author: user, best_answer: nil) }
+  let(:answer) { create(:answer, question: question, author: user) }
 
   describe 'GET #index' do
     before { get :index, params: { question_id: question } }
 
     let(:question) do
-      create(:question, author: user) do |question|
+      create(:question, author: user, best_answer: nil) do |question|
         create_list(:answer, 3, question: question, author: user)
       end
     end
@@ -29,8 +29,8 @@ RSpec.describe AnswersController, type: :controller do
 
   describe 'GET #new' do
     before { login(user) }
-
     before { get :new, params: { question_id: question } }
+
     it 'assign requested question to @question' do
       expect(assigns(:question)).to eq(question)
     end
@@ -65,7 +65,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'DELETE #destroy' do
 
     let!(:question) do
-      create(:question, author: user) do |question|
+      create(:question, author: user, best_answer: nil) do |question|
         create(:answer, question: question, author: user)
       end
     end
@@ -83,7 +83,7 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    let!(:question) { create(:question, author: user) }
+    let!(:question) { create(:question, author: user, best_answer: nil) }
     let!(:answer) { create(:answer, question: question, author: user) }
     context 'with valid attributes' do
       it 'change answer attributes' do
@@ -109,6 +109,25 @@ RSpec.describe AnswersController, type: :controller do
         patch :update, { params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js }
         expect(response).to render_template :update
       end
+    end
+  end
+
+  describe 'PATCH #best' do
+    let!(:question) { create(:question, author: user, best_answer: nil) }
+    let!(:answer) { create(:answer, question: question, author: user) }
+
+    it 'set reference from question to the best answer' do
+      login(user)
+      patch :best, params: { id: answer, answer: attributes_for(:answer), format: :js }
+      question.reload
+      expect(question.best_answer).to eq answer
+    end
+    it 'delete question reference to the best answer if this answer already best' do
+      login(user)
+      Question.update(question.id,  best_answer_id: answer.id)
+      patch :best, params: { id: answer, answer: attributes_for(:answer), format: :js }
+      question.reload
+      expect(question.best_answer).to eq nil
     end
   end
 end

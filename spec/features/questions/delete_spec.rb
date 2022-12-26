@@ -6,7 +6,7 @@ feature 'User can delete question', '
   given(:user) { create(:user) }
 
   given!(:question) do
-    create(:question, author: user) do |question|
+    create(:question, author: user, best_answer: nil) do |question|
       create(:answer, question: question, author: user)
     end
   end

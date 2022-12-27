@@ -3,10 +3,10 @@ require 'rails_helper'
 RSpec.describe QuestionsController, type: :controller do
 
   let(:user) { create(:user) }
-  let(:question) { create(:question, author: user) }
+  let(:question) { create(:question, author: user, best_answer: nil) }
 
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 3, author: user) }
+    let(:questions) { create_list(:question, 3, author: user, best_answer: nil) }
     before { get :index }
 
     it 'populates an array of all questions' do
@@ -107,7 +107,7 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'DELETE #destroy' do
     before { login(user) }
-    let!(:question) { create(:question, author: user) }
+    let!(:question) { create(:question, author: user, best_answer: nil) }
 
     it 'delete the question' do
       expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
@@ -125,26 +125,4 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
-  describe 'POST #answer' do
-    before { login(user) }
-    context 'with valid attributes' do
-      let(:answer) { create(:answer, question: question, author: user) }
-      it '@question is a parent @answer' do
-        post :answer, params: { id: question, answer: attributes_for(:answer) }
-        expect(assigns(:answer).question).to eq(question)
-      end
-      it 'save a new answer in database' do
-        expect { post :answer, params: { id: question, answer: attributes_for(:answer) } }.to change(Answer, :count).by(1)
-      end
-      it 'redirect to question view' do
-        post :answer, params: { id: question, answer: attributes_for(:answer) }
-        expect(response).to redirect_to question_path(question)
-      end
-    end
-    context 'with invalid attributes' do
-      it 'does not save new answer' do
-        expect { post :answer, params: { id: question, answer: attributes_for(:answer, :invalid) } }.to_not change(Answer, :count)
-      end
-    end
-  end
 end

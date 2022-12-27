@@ -6,7 +6,7 @@ feature 'User can view question',
   given(:user) { create(:user) }
 
   given!(:question) do
-    create(:question, author: user) do |question|
+    create(:question, author: user, best_answer: nil) do |question|
       create_list(:answer, 3, :different, question: question, author: user)
     end
   end
@@ -19,8 +19,10 @@ feature 'User can view question',
   scenario 'view list of questions`s answers' do
     visit question_path(question)
 
-    expect(page).to have_content question.answers[0].body
-    expect(page).to have_content question.answers[1].body
-    expect(page).to have_content question.answers[2].body
+    within '.answers' do
+      expect(page).to have_content question.answers[0].body
+      expect(page).to have_content question.answers[1].body
+      expect(page).to have_content question.answers[2].body
+    end
   end
 end

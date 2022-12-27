@@ -13,21 +13,32 @@ class AnswersController < ApplicationController
   def create
     @answer = @question.answers.new(answer_params)
     @answer.author_id = current_user.id
-    if @answer.save
-      redirect_to question_answers_path @question
-    else
-      render :new
-    end
+    @answer.save
   end
 
   def destroy
     @question = @answer.question
-    if @answer.author_id == current_user.id
-      @answer.destroy
-      redirect_to @question, notice: 'Your answer successfully deleted.'
+    @answer.destroy if @answer.author_id == current_user.id
+  end
+
+  def update
+    @answer = Answer.find(params[:id])
+    @answer.update(answer_params)
+    @question = @answer.question
+  end
+
+  def best
+    @answer = Answer.find(params[:id])
+    @question = @answer.question
+    @old_best_answer = @question.best_answer
+    if @question.best_answer_id == @answer.id
+      @question.best_answer_id = nil
+      @best_answer = nil
     else
-      redirect_to @question, notice: 'Only author can delete answer.'
+      @question.best_answer_id = @answer.id
+      @best_answer = @answer
     end
+    @question.save
   end
 
   private

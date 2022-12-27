@@ -5,6 +5,7 @@ FactoryBot.define do
 
   factory :question do
     association :author_id, factory: :user
+    association :best_answer_id, factory: :answer
 
     title { "MyString" }
     body { "MyText" }

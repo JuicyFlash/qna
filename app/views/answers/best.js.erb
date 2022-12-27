@@ -1,0 +1,8 @@
+$('[data-answer-id="<%= @answer.id %>"]').remove();
+$('.best-answer').empty();
+<% unless @best_answer.nil? %>
+  $('.best-answer').append('<%= j render @best_answer %>');
+<% end %>
+<% unless @old_best_answer.nil? %>
+ $('.answers').append('<%= j render @old_best_answer %>');
+<% end %>

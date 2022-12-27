@@ -1,4 +1,7 @@
-= form_with model: resource_model, url: answer_question_path, local: true do |f|
+= form_with model: resources[:form_model], local: false, class: resources[:form_class], html: resources[:form_html] do |f|
   = f.label :body
   = f.text_area :body
-  = f.submit 'Answer'
+  -if resources[:form_class].eql?('new-answer')
+    = f.submit 'Answer'
+  -else
+    = f.submit 'Save'

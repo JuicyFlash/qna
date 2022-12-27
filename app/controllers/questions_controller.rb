@@ -8,20 +8,12 @@ class QuestionsController < ApplicationController
 
   def show
     @answer = Answer.new
+    @best_answer = @question.best_answer
+    @other_answers = @question.answers.where.not(id: @question.best_answer_id)
   end
 
   def new
     @question = Question.new
-  end
-
-  def answer
-    @answer = @question.answers.new(answer_params)
-    @answer.author_id = current_user.id
-    if @answer.save
-      redirect_to @question, notice: 'Your answer successfully created.'
-    else
-      render :show
-    end
   end
 
   def edit; end

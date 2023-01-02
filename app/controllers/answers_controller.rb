@@ -22,8 +22,9 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer = Answer.find(params[:id])
-    @answer.update(answer_params)
+    @answer = Answer.with_attached_files.find(params[:id])
+    @answer.files.attach(answer_params[:files]) unless answer_params[:files].nil?
+    @answer.update(body: answer_params[:body])
     @question = @answer.question
   end
 

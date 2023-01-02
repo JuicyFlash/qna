@@ -28,7 +28,8 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if @question.update(question_params)
+    @question.files.attach(question_params[:files]) unless question_params[:files].nil?
+    if @question.update(title: question_params[:title], body: question_params[:body])
       redirect_to @question
     else
       render :edit

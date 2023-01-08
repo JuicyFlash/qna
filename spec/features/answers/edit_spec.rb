@@ -33,6 +33,17 @@ feature 'User can edit his answer', '
       end
     end
 
+    scenario 'delete answers`s` file', js: true do
+      sign_in(user)
+      answer.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename: "rails_helper.rb", content_type: "text")
+      visit question_path(question)
+      within '.answers' do
+        click_on 'Delete file'
+
+        expect(page).to_not have_content 'rails_helper.rb'
+      end
+    end
+
     scenario 'edits his answer with errors', js: true do
       sign_in(user)
       visit question_path(question)

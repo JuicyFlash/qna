@@ -47,7 +47,7 @@ class QuestionsController < ApplicationController
 
   def purge_file
     file = @question.files.find(params[:file_id])
-    file.purge unless file.nil?
+    file&.purge
     render :edit
   end
 

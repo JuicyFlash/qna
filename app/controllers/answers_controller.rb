@@ -29,7 +29,7 @@ class AnswersController < ApplicationController
   end
 
   def best
-    @answer = Answer.find(params[:id])
+    @answer = Answer.with_attached_files.find(params[:id])
     @question = @answer.question
     @old_best_answer = @question.best_answer
     if @question.best_answer_id == @answer.id
@@ -49,7 +49,7 @@ class AnswersController < ApplicationController
   end
 
   def find_answer
-    @answer = Answer.find(params[:id])
+    @answer = Answer.with_attached_files.find(params[:id])
   end
 
   def find_question

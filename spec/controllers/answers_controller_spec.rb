@@ -124,7 +124,7 @@ RSpec.describe AnswersController, type: :controller do
     end
     it 'delete question reference to the best answer if this answer already best' do
       login(user)
-      Question.update(question.id,  best_answer_id: answer.id)
+      Question.update(question.id, best_answer_id: answer.id)
       patch :best, params: { id: answer, answer: attributes_for(:answer), format: :js }
       question.reload
       expect(question.best_answer).to eq nil

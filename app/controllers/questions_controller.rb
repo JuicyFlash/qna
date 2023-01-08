@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :load_question, only: %i[show edit update destroy answer]
+  before_action :load_question, only: %i[show edit update destroy answer purge_file]
 
   def index
     @questions = Question.all
@@ -45,6 +45,12 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def purge_file
+    file = @question.files.find(params[:file_id])
+    file.purge unless file.nil?
+    render :edit
+  end
+
   private
 
   def load_question
@@ -52,6 +58,6 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body, files: [])
+    params.require(:question).permit(:title, :body, :file_id, files: [])
   end
 end

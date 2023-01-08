@@ -30,6 +30,15 @@ feature 'User can edit his question', '
       expect(page).to have_link 'rails_helper.rb'
     end
 
+    scenario 'delete question`s` file' do
+      sign_in(user)
+      question.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename: "rails_helper.rb", content_type: "text")
+      visit questions_path
+      click_on 'Edit'
+      click_on 'Delete file'
+      expect(page).to_not have_content 'rails_helper.rb'
+    end
+
     scenario 'edits his question with errors' do
       sign_in(user)
       visit questions_path

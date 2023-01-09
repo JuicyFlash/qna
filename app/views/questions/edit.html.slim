@@ -12,5 +12,5 @@
       = link_to 'Delete file', purge_file_question_path(@question, file_id: file.id), method: :patch
   p
   = f.label :files
-  = f.file_field :files, multiple: true
+  = f.file_field :files, multiple: true, direct_upload: true
   = f.submit 'Save'

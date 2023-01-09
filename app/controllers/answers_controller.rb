@@ -22,8 +22,9 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.files.attach(answer_params[:files]) unless answer_params[:files].nil?
-    @answer.update(body: answer_params[:body])
+    # @answer.files.attach(answer_params[:files]) unless answer_params[:files].nil?
+    # @answer.update(body: answer_params[:body])
+    @answer.update(answer_params)
     @question = @answer.question
     @best_answer = @question.best_answer
     @other_answers = @question.answers.where.not(id: @question.best_answer_id)

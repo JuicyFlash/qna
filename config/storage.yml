@@ -5,6 +5,14 @@ test:
 local:
   service: Disk
   root: <%= Rails.root.join("storage") %>
+yandex:
+  service: S3
+  access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
+  secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
+  bucket: adnikolaev-qna
+  region: ru-central3
+  endpoint: 'https://storage.yandexcloud.net'
+  force_path_style: true
 
 # Use rails credentials:edit to set the AWS secrets (as aws:access_key_id|secret_access_key)
 # amazon:

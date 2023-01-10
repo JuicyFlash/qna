@@ -22,9 +22,8 @@ class AnswersController < ApplicationController
   end
 
   def update
-    # @answer.files.attach(answer_params[:files]) unless answer_params[:files].nil?
-    # @answer.update(body: answer_params[:body])
-    @answer.update(answer_params)
+    @answer.files.attach(answer_params[:files]) unless answer_params[:files].nil?
+    @answer.update(body: answer_params[:body])
     @question = @answer.question
     @best_answer = @question.best_answer
     @other_answers = @question.answers.where.not(id: @question.best_answer_id)
@@ -45,7 +44,10 @@ class AnswersController < ApplicationController
 
   def purge_file
     @file = @answer.files.find(params[:file_id])
-    @file&.purge
+  rescue ActiveRecord::RecordNotFound
+    redirect_to @answer.question, { alert: 'Файл не найден' }
+  else
+    @file.purge
   end
 
   private

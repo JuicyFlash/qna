@@ -47,7 +47,10 @@ class QuestionsController < ApplicationController
 
   def purge_file
     file = @question.files.find(params[:file_id])
-    file&.purge
+  rescue ActiveRecord::RecordNotFound
+    redirect_to @question, { alert: 'Файл не найден' }
+  else
+    file.purge
     render :edit
   end
 

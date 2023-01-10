@@ -5,4 +5,12 @@
   = f.text_field :title
   = f.label :body
   = f.text_area :body
+  - if @question.files.attached?
+    - @question.files.find_each do |file|
+      p
+      = link_to file.filename.to_s, url_for(file)
+      = link_to 'Delete file', purge_file_question_path(@question, file_id: file.id), method: :patch
+  p
+  = f.label :files
+  = f.file_field :files, multiple: true, direct_upload: true
   = f.submit 'Save'

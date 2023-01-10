@@ -4,8 +4,10 @@ Rails.application.routes.draw do
   root to: 'questions#index'
 
   resources :questions do
+    patch :purge_file, on: :member
     resources :answers, shallow: true do
       member do
+        patch :purge_file
         patch :best
       end
     end

@@ -1,6 +1,6 @@
 class QuestionsController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
-  before_action :load_question, only: %i[show edit update destroy answer]
+  before_action :load_question, only: %i[show edit update destroy answer purge_file]
 
   def index
     @questions = Question.all
@@ -28,7 +28,8 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    if @question.update(question_params)
+    @question.files.attach(question_params[:files]) unless question_params[:files].nil?
+    if @question.update(title: question_params[:title], body: question_params[:body])
       redirect_to @question
     else
       render :edit
@@ -44,17 +45,22 @@ class QuestionsController < ApplicationController
     end
   end
 
+  def purge_file
+    file = @question.files.find(params[:file_id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to @question, { alert: 'Файл не найден' }
+  else
+    file.purge
+    render :edit
+  end
+
   private
 
   def load_question
-    @question = Question.find(params[:id])
+    @question = Question.with_attached_files.find(params[:id])
   end
 
   def question_params
-    params.require(:question).permit(:title, :body)
-  end
-
-  def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:question).permit(:title, :body, :file_id, files: [])
   end
 end

@@ -22,11 +22,25 @@ feature 'User can edit his answer', '
       click_on 'Edit'
       within '.answers' do
         fill_in 'Body', with: 'edited answer'
+        attach_file 'File', ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
         click_on 'Save'
 
         expect(page).to_not have_content answer.body
         expect(page).to have_content 'edited answer'
         expect(page).to_not have_selector 'textarea'
+        expect(page).to have_link 'spec_helper.rb'
+        expect(page).to have_link 'rails_helper.rb'
+      end
+    end
+
+    scenario 'delete answers`s` file', js: true do
+      sign_in(user)
+      answer.files.attach(io: File.open("#{Rails.root}/spec/rails_helper.rb"), filename: "rails_helper.rb", content_type: "text")
+      visit question_path(question)
+      within '.answers' do
+        click_on 'Delete file'
+
+        expect(page).to_not have_content 'rails_helper.rb'
       end
     end
 

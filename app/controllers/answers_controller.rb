@@ -2,7 +2,7 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i[index]
   before_action :find_question, only: %i[index new create]
   before_action :load_answers, only: %i[index]
-  before_action :find_answer, only: %i[destroy]
+  before_action :find_answer, only: %i[destroy purge_file update best]
 
   def index; end
 
@@ -22,13 +22,14 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer = Answer.find(params[:id])
-    @answer.update(answer_params)
+    @answer.files.attach(answer_params[:files]) unless answer_params[:files].nil?
+    @answer.update(body: answer_params[:body])
     @question = @answer.question
+    @best_answer = @question.best_answer
+    @other_answers = @question.answers.where.not(id: @question.best_answer_id)
   end
 
   def best
-    @answer = Answer.find(params[:id])
     @question = @answer.question
     @old_best_answer = @question.best_answer
     if @question.best_answer_id == @answer.id
@@ -41,18 +42,26 @@ class AnswersController < ApplicationController
     @question.save
   end
 
+  def purge_file
+    @file = @answer.files.find(params[:file_id])
+  rescue ActiveRecord::RecordNotFound
+    redirect_to @answer.question, { alert: 'Файл не найден' }
+  else
+    @file.purge
+  end
+
   private
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body, :file_id, files: [])
   end
 
   def find_answer
-    @answer = Answer.find(params[:id])
+    @answer = Answer.with_attached_files.find(params[:id])
   end
 
   def find_question
-    @question = Question.find(params[:question_id])
+    @question = Question.with_attached_files.find(params[:question_id])
   end
 
   def load_answers

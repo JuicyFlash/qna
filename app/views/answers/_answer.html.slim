@@ -8,6 +8,11 @@
           = link_to file.filename.to_s, url_for(file)
           -if user_signed_in? && answer.author == current_user
             = link_to 'Delete file', purge_file_answer_path(answer, file_id: file.id), method: :patch, remote: true
+    .links
+      p Links:
+      ul
+        - answer.links.find_each do |link|
+          li= link_to link.name, link.url
     -if user_signed_in? && answer.author == current_user
       p
       = link_to 'Delete answer', answer, method: :delete, remote: true

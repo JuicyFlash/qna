@@ -5,6 +5,11 @@ p= @question.body
 - if @question.files.attached?
   -@question.files.find_each do |file|
     p= link_to file.filename.to_s, url_for(file)
+.links
+  p Links:
+  ul
+    -@question.links.find_each do |link|
+      li= link_to link.name, link.url
 = render 'answers/form', resources: { form_model: [@question, @answer], question: @question, form_class: 'new-answer',  form_html: { id: "new-answer" } }
 .answers
   .best-answer

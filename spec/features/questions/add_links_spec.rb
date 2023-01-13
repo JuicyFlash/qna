@@ -15,7 +15,6 @@ feature 'User can add links to question', '
 
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'some text some tex some tex'
-
     fill_in 'Link name', with: 'My gist'
     fill_in 'Url', with: gist_url
     click_on 'Ask'
@@ -29,7 +28,6 @@ feature 'User can add links to question', '
 
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'some text some tex some tex'
-
     fill_in 'Link name', with: 'My gist'
     fill_in 'Url', with: gist_url
     click_on 'add link'
@@ -38,10 +36,22 @@ feature 'User can add links to question', '
       fill_in 'Link name', with: 'My google'
       fill_in 'Url', with: google_url
     end
-
     click_on 'Ask'
+
     expect(page).to have_link 'My gist', href: gist_url
     expect(page).to have_link 'My google', href: google_url
+  end
 
+  scenario 'User add invalid link', js: true do
+    sign_in(user)
+    visit new_question_path
+
+    fill_in 'Title', with: 'Test question'
+    fill_in 'Body', with: 'some text some tex some tex'
+    fill_in 'Link name', with: 'My gist'
+    fill_in 'Url', with: 'My gist_url'
+    click_on 'Ask'
+
+    expect(page).to have_content 'Links url is not a valid URL'
   end
 end

@@ -29,7 +29,6 @@ feature 'User can add links to answer', '
     visit question_path(question)
 
     fill_in 'Body', with: 'some text some tex some tex'
-
     fill_in 'Link name', with: 'My gist'
     fill_in 'Url', with: gist_url
     click_on 'add link'
@@ -44,5 +43,17 @@ feature 'User can add links to answer', '
       expect(page).to have_link 'My gist', href: gist_url
       expect(page).to have_link 'My google', href: google_url
     end
+  end
+
+  scenario 'User add invalid link', js: true do
+    sign_in(user)
+    visit question_path(question)
+
+    fill_in 'Body', with: 'some text some tex some tex'
+    fill_in 'Link name', with: 'My gist'
+    fill_in 'Url', with: 'My gist_url'
+    click_on 'Answer'
+
+    expect(page).to have_content 'Links url is not a valid URL'
   end
 end

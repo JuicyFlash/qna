@@ -4,7 +4,6 @@
 // that code so it'll be compiled.
 //= require jquery3
 //= require activestorage
-
 require("jquery")
 require("@nathanvda/cocoon")
 import Rails from "@rails/ujs"
@@ -12,6 +11,7 @@ import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import "answers/answers"
+import "utilities/gist_loader"
 
 Rails.start()
 Turbolinks.start()

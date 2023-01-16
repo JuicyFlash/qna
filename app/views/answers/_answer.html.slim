@@ -12,7 +12,7 @@
       p Links:
       ul
         - answer.links.find_each do |link|
-          li= link_to link.name, link.url
+          li= render 'shared/link', resource: link
     -if user_signed_in? && answer.author == current_user
       p
       = link_to 'Delete answer', answer, method: :delete, remote: true

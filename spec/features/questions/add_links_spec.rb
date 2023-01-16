@@ -7,6 +7,7 @@ feature 'User can add links to question', '
 ' do
   given(:user) { create(:user) }
   given(:gist_url) { 'https://gist.github.com/JuicyFlash/33c85a488910031155b2da32ed3af130' }
+  given(:ya_url) { 'https://www.ya.ru/' }
   given(:google_url) { 'https://www.google.ru/' }
 
   scenario 'User adds link when asks question' do
@@ -15,11 +16,11 @@ feature 'User can add links to question', '
 
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'some text some tex some tex'
-    fill_in 'Link name', with: 'My gist'
-    fill_in 'Url', with: gist_url
+    fill_in 'Link name', with: 'My Ya'
+    fill_in 'Url', with: ya_url
     click_on 'Ask'
 
-    expect(page).to have_link 'My gist', href: gist_url
+    expect(page).to have_link 'My Ya', href: ya_url
   end
 
   scenario 'User adds several links when asks question', js: true do
@@ -28,8 +29,8 @@ feature 'User can add links to question', '
 
     fill_in 'Title', with: 'Test question'
     fill_in 'Body', with: 'some text some tex some tex'
-    fill_in 'Link name', with: 'My gist'
-    fill_in 'Url', with: gist_url
+    fill_in 'Link name', with: 'My Ya'
+    fill_in 'Url', with: ya_url
     click_on 'add link'
 
     within all('.nested-fields').last do
@@ -38,7 +39,7 @@ feature 'User can add links to question', '
     end
     click_on 'Ask'
 
-    expect(page).to have_link 'My gist', href: gist_url
+    expect(page).to have_link 'My Ya', href: ya_url
     expect(page).to have_link 'My google', href: google_url
   end
 

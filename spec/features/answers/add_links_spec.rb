@@ -8,6 +8,7 @@ feature 'User can add links to answer', '
   given(:user) { create(:user) }
   given(:gist_url) { 'https://gist.github.com/JuicyFlash/33c85a488910031155b2da32ed3af130' }
   given(:google_url) { 'https://www.google.ru/' }
+  given(:ya_url) { 'https://www.ya.ru/' }
   given!(:question) { create(:question, author: user, best_answer: nil) }
 
   scenario 'User adds link when answer', js: true do
@@ -15,12 +16,12 @@ feature 'User can add links to answer', '
     visit question_path(question)
 
     fill_in 'Body', with: 'my answer'
-    fill_in 'Link name', with: 'My gist'
-    fill_in 'Url', with: gist_url
+    fill_in 'Link name', with: 'My Ya'
+    fill_in 'Url', with: google_url
     click_on 'Answer'
 
     within '.answers' do
-      expect(page).to have_link 'My gist', href: gist_url
+      expect(page).to have_link 'My Ya', href: google_url
     end
   end
 
@@ -29,8 +30,8 @@ feature 'User can add links to answer', '
     visit question_path(question)
 
     fill_in 'Body', with: 'some text some tex some tex'
-    fill_in 'Link name', with: 'My gist'
-    fill_in 'Url', with: gist_url
+    fill_in 'Link name', with: 'My Ya'
+    fill_in 'Url', with: ya_url
     click_on 'add link'
 
     within all('.nested-fields').last do
@@ -40,7 +41,7 @@ feature 'User can add links to answer', '
     click_on 'Answer'
 
     within '.answers' do
-      expect(page).to have_link 'My gist', href: gist_url
+      expect(page).to have_link 'My Ya', href: ya_url
       expect(page).to have_link 'My google', href: google_url
     end
   end

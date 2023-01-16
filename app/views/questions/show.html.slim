@@ -9,7 +9,8 @@ p= @question.body
   p Links:
   ul
     -@question.links.find_each do |link|
-      li= link_to link.name, link.url
+      li= render 'shared/link', resource: link
+
 = render 'answers/form', resources: { form_model: [@question, @answer], question: @question, form_class: 'new-answer',  form_html: { id: "new-answer" } }
 .answers
   .best-answer

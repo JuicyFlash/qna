@@ -6,6 +6,7 @@ feature 'User can add links to question', '
   I`d like to be able to add links
 ' do
   given(:user) { create(:user) }
+  given!(:question) { create(:question, author: user, best_answer: nil) }
   given(:gist_url) { 'https://gist.github.com/JuicyFlash/33c85a488910031155b2da32ed3af130' }
   given(:ya_url) { 'https://www.ya.ru/' }
   given(:google_url) { 'https://www.google.ru/' }
@@ -54,5 +55,18 @@ feature 'User can add links to question', '
     click_on 'Ask'
 
     expect(page).to have_content 'Links url is not a valid URL'
+  end
+
+  scenario 'User add link while edit question', js: true do
+    sign_in(user)
+    visit edit_question_path(question)
+    click_on 'add link'
+    fill_in 'Link name', with: 'My google'
+    fill_in 'Url', with: google_url
+    click_on 'Save'
+
+    within '.question' do
+      expect(page).to have_link 'My google', href: google_url
+    end
   end
 end

@@ -10,6 +10,7 @@ feature 'User can add links to answer', '
   given(:google_url) { 'https://www.google.ru/' }
   given(:ya_url) { 'https://www.ya.ru/' }
   given!(:question) { create(:question, author: user, best_answer: nil) }
+  given!(:answer) { create(:answer, question: question, author: user) }
 
   scenario 'User adds link when answer', js: true do
     sign_in(user)
@@ -56,5 +57,18 @@ feature 'User can add links to answer', '
     click_on 'Answer'
 
     expect(page).to have_content 'Links url is not a valid URL'
+  end
+
+  scenario 'User add link while edit answer', js: true do
+    sign_in(user)
+    visit question_path(question)
+    click_on 'Edit'
+    within '.answers' do
+      click_on 'add link'
+      fill_in 'Link name', with: 'My google'
+      fill_in 'Url', with: google_url
+      click_on 'Save'
+      expect(page).to have_link 'My google', href: google_url
+    end
   end
 end

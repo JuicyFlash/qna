@@ -1,2 +1,4 @@
 div class="link-#{resource.id}"
   p= format_link(resource)
+  -if user_signed_in? && resource.linkable.author == current_user
+    = link_to 'remove link', link_path(resource), method: :delete, remote: true

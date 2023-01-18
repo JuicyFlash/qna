@@ -13,5 +13,5 @@
   p
   = f.label :files
   = f.file_field :files, multiple: true, direct_upload: true
-  = render 'shared/links_form', source: f
+  = render 'shared/links_edit_form', source: f
   = f.submit 'Save'

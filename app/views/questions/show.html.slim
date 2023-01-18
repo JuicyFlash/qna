@@ -8,7 +8,7 @@
       p= link_to file.filename.to_s, url_for(file)
   .links
     -@question.links.find_each do |link|
-      = render 'shared/link', resource: link
+      = render 'shared/link_show', resource: link
 
 = render 'answers/form', resources: { form_model: [@question, @answer], question: @question, form_class: 'new-answer',  form_html: { id: "new-answer" } }
 .answers

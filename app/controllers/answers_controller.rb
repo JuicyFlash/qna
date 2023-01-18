@@ -38,6 +38,7 @@ class AnswersController < ApplicationController
       @question.best_answer_id = @answer.id
       @best_answer = @answer
     end
+    @question.reward_best_answer
     @question.save
   end
 

@@ -13,4 +13,14 @@ class Question < ApplicationRecord
   accepts_nested_attributes_for :links, reject_if: :all_blank, allow_destroy: true
 
   validates :title, :body, presence: true
+
+  def reward_best_answer
+    return if reward.nil?
+
+    reward.user_id = if best_answer.nil?
+                       nil
+                     else
+                       best_answer.author.id
+    end
+  end
 end

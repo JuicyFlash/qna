@@ -115,7 +115,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'PATCH #best' do
     let!(:question) { create(:question, author: user, best_answer: nil) }
     let!(:answer) { create(:answer, question: question, author: user) }
-
+    let!(:reward) { create(:reward, question: question) }
     it 'set reference from question to the best answer' do
       login(user)
       patch :best, params: { id: answer, answer: attributes_for(:answer), format: :js }
@@ -128,6 +128,20 @@ RSpec.describe AnswersController, type: :controller do
       patch :best, params: { id: answer, answer: attributes_for(:answer), format: :js }
       question.reload
       expect(question.best_answer).to eq nil
+    end
+    it 'set reference from question`s reward to the best answer`s author' do
+      login(user)
+      patch :best, params: { id: answer, answer: attributes_for(:answer), format: :js }
+      reward.reload
+      expect(reward).to eq user.rewards.first
+    end
+    it 'remove reference from question`s reward to the answer`s author, if attribute best was removed' do
+      login(user)
+      patch :best, params: { id: answer, answer: attributes_for(:answer), format: :js }
+      reward.reload
+      expect(user.rewards.first).to eq reward
+      patch :best, params: { id: answer, answer: attributes_for(:answer), format: :js }
+      expect(user.rewards.first).to eq nil
     end
   end
 end

@@ -1,0 +1,11 @@
+.reward
+  p Question title
+  p
+    = reward.question.title
+  p Reward name
+  p
+    = reward.name
+  p
+    -unless reward.image.nil?
+    .image
+      = image_tag(url_for(reward.image))

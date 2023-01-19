@@ -10,10 +10,13 @@ class QuestionsController < ApplicationController
     @answer = Answer.new
     @best_answer = @question.best_answer
     @other_answers = @question.answers.where.not(id: @question.best_answer_id)
+    @answer.links.new
   end
 
   def new
     @question = Question.new
+    @question.links.new
+    @question.reward = Reward.new
   end
 
   def edit; end
@@ -28,8 +31,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.files.attach(question_params[:files]) unless question_params[:files].nil?
-    if @question.update(title: question_params[:title], body: question_params[:body])
+    if @question.update(question_params)
       redirect_to @question
     else
       render :edit
@@ -61,6 +63,7 @@ class QuestionsController < ApplicationController
   end
 
   def question_params
-    params.require(:question).permit(:title, :body, :file_id, files: [])
+    params.require(:question).permit(:title, :body, :file_id, files: [],
+                                     links_attributes: %i[name url id _destroy], reward_attributes: %i[name image])
   end
 end

@@ -22,8 +22,7 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.files.attach(answer_params[:files]) unless answer_params[:files].nil?
-    @answer.update(body: answer_params[:body])
+    @answer.update(answer_params)
     @question = @answer.question
     @best_answer = @question.best_answer
     @other_answers = @question.answers.where.not(id: @question.best_answer_id)
@@ -39,6 +38,7 @@ class AnswersController < ApplicationController
       @question.best_answer_id = @answer.id
       @best_answer = @answer
     end
+    @question.reward_best_answer
     @question.save
   end
 
@@ -53,7 +53,7 @@ class AnswersController < ApplicationController
   private
 
   def answer_params
-    params.require(:answer).permit(:body, :file_id, files: [])
+    params.require(:answer).permit(:body, :file_id, files: [], links_attributes: %i[name url id _destroy])
   end
 
   def find_answer

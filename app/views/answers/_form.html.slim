@@ -3,6 +3,7 @@
   = f.text_area :body
   = f.label :files
   = f.file_field :files, multiple: true, direct_upload: true
+  = render 'shared/links_edit_form', source: f
   -if resources[:form_class].eql?('new-answer')
     = f.submit 'Answer'
   -else

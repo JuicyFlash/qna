@@ -5,7 +5,6 @@
   p Reward name
   p
     = reward.name
-  p
-    -unless reward.image.nil?
+  -unless reward.image.files.nil?
     .image
       = image_tag(url_for(reward.image))

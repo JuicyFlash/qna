@@ -5,9 +5,8 @@ FactoryBot.define do
   end
 
   factory :answer do
-    association :question
-    association :author_id, factory: :user
-
+    association :question, factory: :question
+    association :author, factory: :user
     body { "MyString" }
 
     trait :invalid do

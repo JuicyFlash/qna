@@ -1,4 +1,4 @@
-module LinkHelper
+module LinksHelper
 
   def format_link(link)
     if gist?(link.url)

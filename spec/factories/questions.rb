@@ -4,9 +4,8 @@ FactoryBot.define do
   end
 
   factory :question do
-    association :author_id, factory: :user
-    association :best_answer_id, factory: :answer
-
+    association :author, factory: :user
+    best_answer_id { nil }
     title { "MyString" }
     body { "MyText" }
 

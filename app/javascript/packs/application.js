@@ -12,6 +12,7 @@ import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import "answers/answers"
 import "utilities/gist_loader"
+import "utilities/votable"
 
 Rails.start()
 Turbolinks.start()

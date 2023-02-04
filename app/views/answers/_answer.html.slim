@@ -1,6 +1,7 @@
 -unless answer.id.nil?
   .answer data-answer-id = answer.id
     p= answer.body
+    = render 'shared/votes', resource: answer
     - if answer.files.attached?
       - answer.files.find_each do |file|
         .file data-file-id = file.id

@@ -17,6 +17,7 @@ feature 'User can add links to answer', '
     visit question_path(question)
 
     fill_in 'Body', with: 'my answer'
+    click_on 'add link'
     fill_in 'Link name', with: 'My Ya'
     fill_in 'Url', with: google_url
     click_on 'Answer'
@@ -31,6 +32,7 @@ feature 'User can add links to answer', '
     visit question_path(question)
 
     fill_in 'Body', with: 'some text some tex some tex'
+    click_on 'add link'
     fill_in 'Link name', with: 'My Ya'
     fill_in 'Url', with: ya_url
     click_on 'add link'
@@ -52,6 +54,7 @@ feature 'User can add links to answer', '
     visit question_path(question)
 
     fill_in 'Body', with: 'some text some tex some tex'
+    click_on 'add link'
     fill_in 'Link name', with: 'My gist'
     fill_in 'Url', with: 'My gist_url'
     click_on 'Answer'

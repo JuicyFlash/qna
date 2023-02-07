@@ -1,7 +1,7 @@
 .reward
   p
-    = resource.label :name, 'Reward name'
-    = resource.text_field :name
+    = resource.label :name, 'Reward name', class: "input-group-text"
+    = resource.text_field :name, class: "form-control"
   p
     = resource.label :image
-    = resource.file_field :image, direct_upload: true
+    = resource.file_field :image, class: "form-control", direct_upload: true

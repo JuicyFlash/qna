@@ -6,6 +6,7 @@
 //= require popper
 //= require bootstrap
 //= require activestorage
+//= require action_cable
 require("jquery")
 require("@nathanvda/cocoon")
 import Rails from "@rails/ujs"

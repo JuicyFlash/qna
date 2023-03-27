@@ -65,7 +65,7 @@ feature 'User can add links to question', '
     fill_in 'Url', with: google_url
     click_on 'Save'
 
-    within '.question' do
+    within '.question-details' do
       expect(page).to have_link 'My google', href: google_url
     end
   end

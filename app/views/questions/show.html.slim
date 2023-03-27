@@ -1,6 +1,6 @@
 .answer-errors
   = render 'shared/errors', resource: @answer
-.question.card
+.question-details.card data-question-id = @question.id
   .card-header
     = @question.title
   .card-body

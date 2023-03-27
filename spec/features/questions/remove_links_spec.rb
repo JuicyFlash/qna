@@ -12,7 +12,7 @@ feature 'User can remove links to question', '
   scenario 'User remove link from question', js: true do
     sign_in(user)
     visit question_path(question)
-    within '.question' do
+    within '.question-details' do
       click_on 'remove link'
       expect(page).to_not have_link link.name, href: link.url
     end
@@ -21,7 +21,7 @@ feature 'User can remove links to question', '
     not_author = create(:user)
     sign_in(not_author)
     visit question_path(question)
-    within '.question' do
+    within '.question-details' do
       expect(page).to_not have_link 'remove link'
     end
   end

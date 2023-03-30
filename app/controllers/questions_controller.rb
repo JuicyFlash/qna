@@ -65,7 +65,6 @@ class QuestionsController < ApplicationController
 
   def respond_question_json
     { id: @question.id.to_s,
-      created: @created || false,
       title: @question.title,
       body: @question.body,
       author_id: @question.author_id,

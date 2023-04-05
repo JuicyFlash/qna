@@ -14,9 +14,8 @@
 .answers
   .best-answer
     - unless @best_answer.nil?
-      p= render @best_answer
-  p= render @other_answers
-
+      = render @best_answer
+  = render @other_answers
 .card
   .card-header Your answer
   .card-body

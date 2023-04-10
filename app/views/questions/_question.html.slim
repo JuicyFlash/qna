@@ -18,3 +18,4 @@
 
   .container.text-end
     = render 'shared/votes', resource: question
+  = render 'shared/comments', resources: { commentable: question, form_url: new_comment(question), form_class: 'new-comment', form_html: data_commentable_id(question) }

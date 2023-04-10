@@ -23,3 +23,4 @@
       .container
         = render 'shared/votes', resource: answer
     = render 'answers/form', resources: { form_model: [answer], form_class: 'hidden', form_html: { id: "edit-answer-#{answer.id}" } }
+    = render 'shared/comments', resources: { commentable: answer, form_url: new_comment(answer), form_class: 'new-comment', form_html: data_commentable_id(answer) }

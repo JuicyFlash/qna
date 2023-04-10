@@ -1,0 +1,6 @@
+= link_to 'Comments', '#',class:'comment-link', id: "comment-link-#{element_id(resources[:commentable])}", data: {"commentable-id": "#{resources[:commentable].id}", "commentable": "#{commentable_to_s(resources[:commentable])}" }
+= link_to 'Close comments', '#',class:'close-comment-link hidden', id: "close-comment-link-#{element_id(resources[:commentable])}", data: {"commentable-id": "#{resources[:commentable].id}", "commentable": "#{commentable_to_s(resources[:commentable])}" }
+.comments.hidden id="comments-#{element_id(resources[:commentable])}" data-commentable=commentable_to_s(resources[:commentable]) data-commentable-id =resources[:commentable].id
+  .comments-list id="comments-list-#{element_id(resources[:commentable])}" data-commentable=commentable_to_s(resources[:commentable]) data-commentable-id =resources[:commentable].id
+    = render resources[:commentable].comments
+  = render 'comments/form', resources: resources

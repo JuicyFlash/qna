@@ -32,7 +32,7 @@ RSpec.shared_examples_for 'votable' do
     obj.set_vote(second_user, -1)
     expect(obj.votes_value).to eq(-2)
   end
-  it 'can get have_votes? 'do
+  it 'can get have_votes? ' do
     expect(obj.votes.count).to eq 0
     expect(obj.have_vote?(user)).to eq false
     obj.set_vote(user, 1)

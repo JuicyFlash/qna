@@ -1,5 +1,6 @@
 class QuestionsController < ApplicationController
   include Voted
+  include Commented
 
   before_action :authenticate_user!, except: %i[index show]
   before_action :load_question, only: %i[show edit update destroy answer purge_file]
@@ -7,6 +8,7 @@ class QuestionsController < ApplicationController
 
   def index
     gon_current_user
+    @comment = Comment.new
     @questions = Question.all
   end
 

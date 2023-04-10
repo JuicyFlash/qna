@@ -15,6 +15,7 @@ import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import "utilities/gist_loader"
 import "utilities/votable"
+import "utilities/commentable"
 import "answers/answer"
 
 Rails.start()

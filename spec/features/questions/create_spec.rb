@@ -52,7 +52,7 @@ feature 'User can create question', '
     expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
   describe "multiple sessions" do
-    scenario 'question appears on another question`s page' , js: true do
+    scenario 'question appears on another question`s page', js: true do
       Capybara.using_session('user') do
         sign_in(user)
         visit questions_path

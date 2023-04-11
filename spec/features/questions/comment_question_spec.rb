@@ -12,4 +12,25 @@ feature 'User can add comments to question' do
     click_on 'Comment'
     expect(page).to have_content 'some comment'
   end
+  scenario 'comments appears on another question`s page', js: true do
+    Capybara.using_session('user') do
+      sign_in(user)
+      visit questions_path
+    end
+
+    Capybara.using_session('guest') do
+      visit questions_path
+      click_on 'Comments'
+    end
+
+    Capybara.using_session('user') do
+      click_on 'Comments'
+      fill_in 'Body', with: 'some comment'
+      click_on 'Comment'
+    end
+
+    Capybara.using_session('guest') do
+      expect(page).to have_content 'some comment'
+    end
+  end
 end

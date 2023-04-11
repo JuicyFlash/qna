@@ -4,6 +4,7 @@ module Commented
   extend ActiveSupport::Concern
   included do
     before_action :set_commentable, only: %i[comments create_comment]
+    after_action :publish_comment, only: %i[create_comment]
   end
 
   def comments
@@ -22,12 +23,22 @@ module Commented
 
   private
 
+  def publish_comment
+    return if @comment.errors.any?
+
+    CommentsChannel.broadcast_to(
+      "#{@commentable.class.to_s}-#{@commentable.id}-comments",
+      respond_comment_json
+    )
+  end
+
   def comment_params
     params.permit(:body)
   end
 
   def respond_comment_json
-    { commentable: model_klass.to_s.downcase.to_s,
+    { user_id: current_user.id,
+      commentable: model_klass.to_s.downcase.to_s,
       commentable_id: @commentable.id.to_s,
       comment_id: @comment.id.to_s,
       author_id: @comment.author.id,

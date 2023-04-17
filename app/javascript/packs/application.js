@@ -3,16 +3,20 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 //= require jquery3
+//= require popper
+//= require bootstrap
 //= require activestorage
+//= require action_cable
 require("jquery")
 require("@nathanvda/cocoon")
 import Rails from "@rails/ujs"
 import Turbolinks from "turbolinks"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
-import "answers/answers"
 import "utilities/gist_loader"
 import "utilities/votable"
+import "utilities/commentable"
+import "answers/answer"
 
 Rails.start()
 Turbolinks.start()

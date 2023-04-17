@@ -1,0 +1,47 @@
+<div class="answer" data-answer-id = {{id}}>
+    <div class="card w-75 text-bg-light border-light">
+        <div class="card-body">
+            {{body}}
+            {{#if files}}
+                {{#each files}}
+                    <div class="file" data-file-id = {{this.id}}>
+                        <p>
+                            <a href="{{this.url}}">{{this.name}}</a>
+                        </p>
+                    </div>
+                {{/each}}
+            {{/if}}
+            <div class="links">
+                {{#each links}}
+                    <a target="_blank" href="{{this.url}}">{{this.name}}</a>
+                {{/each}}
+            </div>
+            {{#if can_best}}
+                <div>
+                    <a href="{{best_link}}" data-remote="true" rel="nofollow" data-method="patch" > Best answer </a>
+                </div>
+            {{/if}}
+            {{#if is_author}}
+                <div class=" container text-end">
+                    <a class="btn btn-outline-danger btn-sm" data-remote="true" rel="nofollow" data-method="delete" href="/answers/{{id}}">Delete answer</a>
+                    <a class="edit-answer-link btn btn-outline-primary btn-sm" data-answer-id="158" href="#">Edit</a>
+                </div>
+            {{/if}}
+        </div>
+        <div class="container">
+            <div class="votes">
+                <div class="container text-end">
+                    <div class="votes-value">
+                        0
+                    </div>
+                </div>
+            </div>
+            {{#if can_vote}}
+                <div class="vote-links">
+                    <a class="vote-link like" data-method="patch" data-type="json" data-remote="true" href="{{like_link}}"></a>
+                    <a class="vote-link like" data-method="patch" data-type="json" data-remote="true" href="{{dislike_link}}"></a>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+</div>

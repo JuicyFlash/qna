@@ -25,7 +25,12 @@ gem 'aws-sdk-s3', require: false
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 gem 'devise'
-
+# Bootstrap
+gem 'bootstrap', '~> 5.2.2'
+# Gon
+gem 'gon'
+# Skim
+gem 'skim'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'slim-rails'

@@ -1,10 +1,10 @@
 = form_with model: resources[:form_model], local: false, class: resources[:form_class], html: resources[:form_html] do |f|
   = f.label :body
-  = f.text_area :body
+  = f.text_area :body, class: "form-control"
   = f.label :files
-  = f.file_field :files, multiple: true, direct_upload: true
+  = f.file_field :files, class: "form-control", multiple: true, direct_upload: true
   = render 'shared/links_edit_form', source: f
-  -if resources[:form_class].eql?('new-answer')
+  - if resources[:form_class].eql?('new-answer')
     = f.submit 'Answer'
-  -else
+  - else
     = f.submit 'Save'

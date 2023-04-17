@@ -1,10 +1,12 @@
 class AnswersController < ApplicationController
   include Voted
+  include Commented
 
   before_action :authenticate_user!, except: %i[index]
   before_action :find_question, only: %i[index new create]
   before_action :load_answers, only: %i[index]
   before_action :find_answer, only: %i[destroy purge_file update best]
+  after_action :publish_answer, only: %i[create]
 
   def index; end
 
@@ -53,6 +55,35 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def respond_answer_json
+    { user_id: current_user.id,
+      id: @answer.id.to_s,
+      body: @answer.body,
+      files: attached_files,
+      links: @answer.links,
+      author_id: @answer.author_id,
+      question_author_id: @question.author_id,
+      votes_value: @answer.votes_value,
+      like_link: like_answer_path(@answer),
+      dislike_link: dislike_answer_path(@answer),
+      best_link: best_answer_path(@answer) }
+  end
+
+  def publish_answer
+    return if @answer.errors.any?
+
+    AnswersChannel.broadcast_to(
+      @question,
+      respond_answer_json
+    )
+  end
+
+  def attached_files
+    return [] unless @answer.files.any?
+
+    @answer.files.map { |file| { id: file.id, name: file.filename.to_s, url: url_for(file) } }
+  end
 
   def answer_params
     params.require(:answer).permit(:body, :file_id, files: [], links_attributes: %i[name url id _destroy])

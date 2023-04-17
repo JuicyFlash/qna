@@ -6,12 +6,19 @@ Rails.application.routes.draw do
     end
   end
 
+  concern :commentable do
+    member do
+      get :comments
+      post :create_comment
+    end
+  end
+
   devise_for :users
   root to: 'questions#index'
 
-  resources :questions, concerns: [:votable] do
+  resources :questions, concerns: [:votable, :commentable] do
     patch :purge_file, on: :member
-    resources :answers, concerns: [:votable], shallow: true do
+    resources :answers, concerns: [:votable, :commentable], shallow: true do
       member do
         patch :purge_file
         patch :best
@@ -20,4 +27,6 @@ Rails.application.routes.draw do
   end
   resources :rewards, only: :index
   resources :links, only: :destroy
+
+  mount ActionCable.server => '/cable'
 end

@@ -1,4 +1,3 @@
-
 class FindForOauthService
   attr_reader :auth
 

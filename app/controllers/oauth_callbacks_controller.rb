@@ -10,6 +10,7 @@ class OauthCallbacksController < Devise::OmniauthCallbacksController
       redirect_to root_path, alert: 'Some thing went wrong'
     end
   end
+
   def google_oauth2
     @user = User.find_for_oauth(request.env['omniauth.auth'])
     if @user&.persisted?

@@ -12,20 +12,24 @@ class AnswersController < ApplicationController
 
   def new
     @answer = current_user.answers.new
+    authorize @answer
   end
 
   def create
     @answer = @question.answers.new(answer_params)
     @answer.author_id = current_user.id
+    authorize @answer
     @answer.save
   end
 
   def destroy
     @question = @answer.question
-    @answer.destroy if @answer.author_id == current_user.id
+    authorize @answer
+    @answer.destroy
   end
 
   def update
+    authorize @answer
     @answer.update(answer_params)
     @question = @answer.question
     @best_answer = @question.best_answer
@@ -33,6 +37,7 @@ class AnswersController < ApplicationController
   end
 
   def best
+    authorize @answer
     @question = @answer.question
     @old_best_answer = @question.best_answer
     if @question.best_answer_id == @answer.id

@@ -3,4 +3,5 @@
 .comments.hidden id="comments-#{element_id(resources[:commentable])}" data-commentable=commentable_to_s(resources[:commentable]) data-commentable-id =resources[:commentable].id
   .comments-list id="comments-list-#{element_id(resources[:commentable])}" data-commentable=commentable_to_s(resources[:commentable]) data-commentable-id =resources[:commentable].id
     = render resources[:commentable].comments
-  = render 'comments/form', resources: resources
+  - if policy(resources[:commentable]).create_comment?
+    = render 'comments/form', resources: resources

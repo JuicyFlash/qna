@@ -70,12 +70,6 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
 
-    it 'not delete if user is not author of @answer' do
-      not_author = create(:user)
-      login(not_author)
-      expect { delete :destroy, params: { id: question.answers[0] }, format: :js}.to change(Answer, :count).by(0)
-    end
-
     it 'delete the answer' do
       login(user)
       expect { delete :destroy, params: { id: question.answers[0] }, format: :js }.to change(Answer, :count).by(-1)

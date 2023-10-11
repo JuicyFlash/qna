@@ -11,7 +11,7 @@
         .col-4
           = link_to "Show", question_path(question), class: "btn btn-primary"
         .col-4
-          -if user_signed_in? && question.author == current_user
+          -if policy(question).update?
             .d-grid.gap-2.d-md-flex.justify-content-md-end
               = link_to 'Edit', edit_question_path(question), class: "btn btn-outline-primary btn-sm"
               = link_to 'Delete question', question_path(question), class: "btn btn-outline-primary btn-sm", method: :delete

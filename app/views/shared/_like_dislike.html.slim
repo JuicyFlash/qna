@@ -1,4 +1,4 @@
--if user_signed_in? && resource.author != current_user
+-if policy(resource).like? ||  policy(resource).dislike?
   .vote-links
     = like_link(resource)
     = dislike_link(resource)

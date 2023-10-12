@@ -7,6 +7,7 @@ module Voted
   end
 
   def like
+    authorize @votable
     @votable.set_vote(current_user, 1)
     @votable.save
     respond_to do |format|
@@ -15,6 +16,7 @@ module Voted
   end
 
   def dislike
+    authorize @votable
     @votable.set_vote(current_user, -1)
     @votable.save
     respond_to do |format|

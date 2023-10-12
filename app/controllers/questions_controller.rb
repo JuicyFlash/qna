@@ -22,6 +22,7 @@ class QuestionsController < ApplicationController
 
   def new
     @question = Question.new
+    authorize @question
     @question.links.new
     @question.reward = Reward.new
   end
@@ -30,6 +31,7 @@ class QuestionsController < ApplicationController
 
   def create
     @question = current_user.questions.new(question_params)
+    authorize @question
     if @question.save
       @created = true
       redirect_to @question, notice: 'Your question successfully created'
@@ -39,6 +41,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
+    authorize @question
     if @question.update(question_params)
       redirect_to @question
     else
@@ -47,6 +50,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
+    authorize @question
     if @question.author_id == current_user.id
       @question.destroy
       redirect_to questions_path, notice: 'Your question successfully deleted.'

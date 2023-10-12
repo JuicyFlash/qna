@@ -31,6 +31,8 @@ gem 'bootstrap', '~> 5.2.2'
 gem 'gon'
 # Skim
 gem 'skim'
+#Pundit
+gem 'pundit'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'slim-rails'

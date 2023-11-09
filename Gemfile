@@ -33,6 +33,10 @@ gem 'gon'
 gem 'skim'
 #Pundit
 gem 'pundit'
+#DoorKeeper
+gem 'doorkeeper'
+gem 'active_model_serializers', '~> 0.10'
+gem 'oj'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'slim-rails'

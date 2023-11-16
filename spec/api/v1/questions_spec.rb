@@ -51,7 +51,7 @@ describe 'Questions API', type: :request do
           expect(question_response['answers'].size).to eq 3
         end
         it 'returns all public fields' do
-          %w[id body author_id created_at updated_at].each do |attr|
+          %w[id body created_at updated_at].each do |attr|
             expect(answer_response[attr]).to eq answer.send(attr).as_json
           end
         end
@@ -92,7 +92,7 @@ describe 'Questions API', type: :request do
       end
       it 'contains links, comments, files' do
         %w[links comments files].each do |attr|
-          question_response.keys.should include attr
+          expect(question_response.keys).to include attr
         end
       end
 

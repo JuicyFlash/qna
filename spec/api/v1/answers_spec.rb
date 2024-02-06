@@ -5,15 +5,11 @@ describe 'Answers API', type: :request do
                    'ACCEPT' => 'application/json' } }
 
   describe 'GET /api/v1/questions/:id/answers' do
-    context 'unauthorized' do
-      let!(:question) { create(:question) }
-      it 'returns 401 status if there is no access_token' do
-        get "/api/v1/questions/#{question.id}/answers", headers: headers
-        expect(response.status).to eq 401
-      end
-      it 'returns 401 status if there is invalid' do
-        get "/api/v1/questions/#{question.id}/answers", params: { access_token: '1234' }, headers: headers
-        expect(response.status).to eq 401
+    it_behaves_like 'API authorizable' do
+      let(:question) { create(:question) }
+      let(:method) { 'get' }
+      let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
+      let(:params) do { access_token: '1234' }
       end
     end
 
@@ -45,15 +41,11 @@ describe 'Answers API', type: :request do
   end
 
   describe 'GET /api/v1/answers/:id' do
-    context 'unauthorized' do
-      let!(:answer) { create(:answer) }
-      it 'returns 401 status if there is no access_token' do
-        get "/api/v1/answers/#{answer.id}", headers: headers
-        expect(response.status).to eq 401
-      end
-      it 'returns 401 status if there is invalid' do
-        get "/api/v1/answers/#{answer.id}", params: { access_token: '1234' }, headers: headers
-        expect(response.status).to eq 401
+    it_behaves_like 'API authorizable' do
+      let(:answer) { create(:answer) }
+      let(:method) { 'get' }
+      let(:api_path) { "/api/v1/answers/#{answer.id}" }
+      let(:params) do { access_token: '1234' }
       end
     end
 
@@ -106,21 +98,15 @@ describe 'Answers API', type: :request do
   end
 
   describe 'POST /api/v1/questions/:question_id/answers' do
-    context 'unauthorized' do
-      let!(:question) { create(:question) }
-
-      it 'returns 401 status if there is no access_token' do
-        post "/api/v1/questions/#{question.id}/answers"
-        expect(response.status).to eq 401
-      end
-      it 'returns 401 status if there is invalid' do
-        post "/api/v1/questions/#{question.id}/answers", params: { access_token: '1234',
-                                                                   user_id: '1',
-                                                                   answer: { body: 'test' } }
-        expect(response.status).to eq 401
+    it_behaves_like 'API authorizable' do
+      let(:question) { create(:question) }
+      let(:method) { 'post' }
+      let(:api_path) { "/api/v1/questions/#{question.id}/answers" }
+      let(:params) do { access_token: '1234',
+                        user_id: '1',
+                        answer: { body: 'test' } }
       end
     end
-
     context 'authorized' do
       let!(:access_token) { create(:access_token) }
       let!(:user) { create(:user) }
@@ -170,18 +156,13 @@ describe 'Answers API', type: :request do
   end
 
   describe 'PATCH /api/v1/answers/:id' do
-    context 'unauthorized' do
-      let!(:answer) { create(:answer) }
-
-      it 'returns 401 status if there is no access_token' do
-        patch "/api/v1/answers/#{answer.id}", headers: headers
-        expect(response.status).to eq 401
-      end
-      it 'returns 401 status if there is invalid' do
-        patch "/api/v1/answers/#{answer.id}", params: { access_token: '1234',
-                                                        user_id: '1',
-                                                        answer: { body: 'test' } }
-        expect(response.status).to eq 401
+    it_behaves_like 'API authorizable' do
+      let(:answer) { create(:answer) }
+      let(:method) { 'patch' }
+      let(:api_path) { "/api/v1/answers/#{answer.id}" }
+      let(:params) do { access_token: '1234',
+                        user_id: '1',
+                        answer: { body: 'test' } }
       end
     end
 
@@ -221,17 +202,12 @@ describe 'Answers API', type: :request do
   end
 
   describe 'DELETE /api/v1/answers/:id' do
-    context 'unauthorized' do
-      let!(:answer) { create(:answer) }
-
-      it 'returns 401 status if there is no access_token' do
-        delete "/api/v1/answers/#{answer.id}", headers: headers
-        expect(response.status).to eq 401
-      end
-      it 'returns 401 status if there is invalid' do
-        delete "/api/v1/answers/#{answer.id}", params: { access_token: '1234',
-                                                         user_id: '1' }
-        expect(response.status).to eq 401
+    it_behaves_like 'API authorizable' do
+      let(:answer) { create(:answer) }
+      let(:method) { 'delete' }
+      let(:api_path) { "/api/v1/answers/#{answer.id}" }
+      let(:params) do { access_token: '1234',
+                        user_id: '1' }
       end
     end
 

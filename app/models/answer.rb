@@ -13,4 +13,12 @@ class Answer < ApplicationRecord
   accepts_nested_attributes_for :links, reject_if: :all_blank, allow_destroy: true
 
   validates :body, presence: true
+
+  after_create :notify_author_of_question
+
+  private
+
+  def notify_author_of_question
+    NotifyAuthorOfQuestionJob.perform_later(self)
+  end
 end

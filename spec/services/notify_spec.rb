@@ -2,11 +2,15 @@ require 'rails_helper'
 
 RSpec.describe Notify do
   let(:user) { create(:user) }
-  let(:question) { create(:question, author: user) }
-  let(:answer) { create(:answer, question: question) }
+  let(:users) { create_list(:user, 3) }
+  let(:question) { create(:question) }
 
-  it 'send notify to author of question' do
-    expect(AuthorOfQuestionMailer).to receive(:notify).with(question.author, answer).and_call_original
-    subject.notify_author_of_question(answer)
+  it 'send notify to question subscribers' do
+    users.each { |user| question.subscribe(user) }
+
+    users.each { |user| expect(QuestionSubscribersMailer).to receive(:notify).with(user).and_call_original }
+
+    expect(QuestionSubscribersMailer).to receive(:notify).with(question.author).and_call_original
+    subject.notify_question_subscribers(question)
   end
 end

@@ -20,8 +20,8 @@ RSpec.describe Answer, type: :model do
     let(:question) { create :question, author: question_author }
     let(:answer) { build :answer, question: question }
 
-    it 'call NotifyAuthorOfQuestionJob' do
-      expect(NotifyAuthorOfQuestionJob).to receive(:perform_later).with(answer)
+    it 'call NotifyQuestionSubscribersJob' do
+      expect(NotifyQuestionSubscribersJob).to receive(:perform_later).with(answer.question)
       answer.save!
     end
   end

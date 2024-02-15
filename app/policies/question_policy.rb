@@ -18,6 +18,18 @@ class QuestionPolicy < ApplicationPolicy
     user.present?
   end
 
+  def subscribe?
+    return false unless user.present?
+
+    true
+  end
+
+  def unsubscribe?
+    return false unless user.present?
+
+    true
+  end
+
   def like?
     return false unless user.present?
 

@@ -53,6 +53,26 @@ RSpec.describe QuestionPolicy, type: :policy do
     end
   end
 
+  permissions :subscribe? do
+    it 'grants access if user are login' do
+      expect(subject).to permit(user, question)
+    end
+    it 'not grant access if user are not login' do
+      uncreated_user = nil
+      expect(subject).to_not permit(uncreated_user, question)
+    end
+  end
+
+  permissions :unsubscribe? do
+    it 'grants access if user are login' do
+      expect(subject).to permit(user, question)
+    end
+    it 'not grant access if user are not login' do
+      uncreated_user = nil
+      expect(subject).to_not permit(uncreated_user, question)
+    end
+  end
+
   permissions :create_comment? do
     it 'grants access if user is admin' do
       expect(subject).to permit(admin, question)

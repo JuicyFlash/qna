@@ -1,0 +1,4 @@
+-if policy(resource).subscribe? ||  policy(resource).unsubscribe?
+  .subscription
+    = subscribe_link(resource)
+    = unsubscribe_link(resource)

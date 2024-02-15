@@ -14,11 +14,11 @@ class Answer < ApplicationRecord
 
   validates :body, presence: true
 
-  after_create :notify_author_of_question
+  after_create :notify_question_subscribers
 
   private
 
-  def notify_author_of_question
-    NotifyAuthorOfQuestionJob.perform_later(self)
+  def notify_question_subscribers
+    NotifyQuestionSubscribersJob.perform_later(self.question)
   end
 end

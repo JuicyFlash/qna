@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe Question, type: :model do
   it_behaves_like 'votable'
   it_behaves_like 'commentable'
+  it_behaves_like 'subscrible'
 
   it { should have_many(:answers).dependent(:destroy) }
   it { should have_many(:links).dependent(:destroy) }
@@ -23,7 +24,7 @@ RSpec.describe Question, type: :model do
     let!(:question) { create(:question, author: user, best_answer: nil) }
     let!(:answer) { create(:answer, author: user, question: question) }
     let!(:reward) { create(:reward, question: question) }
-
+    let(:subscribed_question) { build(:question, author: user) }
     it 'set reference from question`s reward to the best answer`s author' do
       question.best_answer = answer
 
@@ -62,6 +63,11 @@ RSpec.describe Question, type: :model do
       question.save
 
       expect(user.rewards.first).to eq nil
+    end
+
+    it 'subscribe author on question' do
+      expect(subscribed_question).to receive(:subscribe).with(user)
+      subscribed_question.save!
     end
   end
 end

@@ -20,10 +20,17 @@ Rails.application.routes.draw do
     end
   end
 
+  concern :subscrible do
+    member do
+      patch :subscribe
+      patch :unsubscribe
+    end
+  end
+
   devise_for :users, controllers: { omniauth_callbacks: 'oauth_callbacks' }
   root to: 'questions#index'
 
-  resources :questions, concerns: %i[votable commentable] do
+  resources :questions, concerns: %i[votable commentable subscrible] do
     patch :purge_file, on: :member
     resources :answers, concerns: %i[votable commentable], shallow: true do
       member do

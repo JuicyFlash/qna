@@ -7,7 +7,7 @@ module Subscrible
   end
 
   def have_subscription?(user)
-    !get_subscription(user).empty?
+    !get_subscription(user).nil?
   end
 
   def subscribe(user)
@@ -15,10 +15,10 @@ module Subscrible
   end
 
   def unsubscribe(user)
-    get_subscription(user).delete_all if have_subscription?(user)
+    get_subscription(user).destroy if have_subscription?(user)
   end
 
   def get_subscription(user)
-    subscriptions.where(subscriber: user)
+    subscriptions.where(subscriber: user).first
   end
 end

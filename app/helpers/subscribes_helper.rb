@@ -5,23 +5,23 @@ module SubscribesHelper
     "[data-#{subscrible.class.to_s.downcase}-id=#{subscrible.id}]"
   end
 
-  def subscribe_link(resource)
-    link_to 'Subscribe',
-            subscribe_subscrible_path(resource),
-            method: :patch,
-            class: resource.have_subscription?(current_user) ? 'subscrible-link subscribe hidden' : 'subscrible-link subscribe',
-            data: { type: :json },
-            remote: true
+  def subscrible_link(resource)
+    if resource.have_subscription?(current_user)
+      link_to 'Unsubscribe',
+              subscription_path(resource.get_subscription(current_user)),
+              method: :DELETE,
+              class: 'subscrible-link unsubscribe',
+              data: { type: :json },
+              remote: true
 
-  end
-
-  def unsubscribe_link(resource)
-    link_to 'Unsubscribe',
-            unsubscribe_subscrible_path(resource),
-            method: :patch,
-            class: resource.have_subscription?(current_user) ? 'subscrible-link unsubscribe' : 'subscrible-link unsubscribe hidden',
-            data: { type: :json },
-            remote: true
+    else
+      link_to 'Subscribe',
+              subscriptions_path(:params => {subscrible: { name: resource.class.to_s.downcase, id: resource.id } }),
+              method: :post,
+              class: 'subscrible-link subscribe',
+              data: { type: :json },
+              remote: true
+    end
   end
 
   private

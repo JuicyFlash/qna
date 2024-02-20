@@ -3,6 +3,7 @@
 class Question < ApplicationRecord
   include Votable
   include Commentable
+  include Subscrible
 
   has_many :answers, dependent: :destroy
   has_many :links, dependent: :destroy, as: :linkable
@@ -17,6 +18,8 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true
 
+  after_create :subscribe_author
+
   def reward_best_answer
     return if reward.nil?
 
@@ -25,5 +28,11 @@ class Question < ApplicationRecord
                      else
                        best_answer.author.id
     end
+  end
+
+  private
+
+  def subscribe_author
+    subscribe(author)
   end
 end

@@ -1,4 +1,10 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   use_doorkeeper
   concern :votable do
     member do
@@ -18,14 +24,18 @@ Rails.application.routes.draw do
   root to: 'questions#index'
 
   resources :questions, concerns: %i[votable commentable] do
-    patch :purge_file, on: :member
+    member do
+      patch :purge_file
+    end
     resources :answers, concerns: %i[votable commentable], shallow: true do
       member do
         patch :purge_file
         patch :best
       end
     end
+
   end
+  resources :subscriptions, only: %i[create destroy], shallow: true
   resources :rewards, only: :index
   resources :links, only: :destroy
 

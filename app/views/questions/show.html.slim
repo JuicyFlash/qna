@@ -8,6 +8,7 @@
   - if @question.files.attached?
     -@question.files.find_each do |file|
       p= link_to file.filename.to_s, url_for(file)
+  = render 'shared/subscribe', resource: @question
   .links
     -@question.links.find_each do |link|
       = render 'shared/link_show', resource: link

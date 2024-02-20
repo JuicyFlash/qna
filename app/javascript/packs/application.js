@@ -16,6 +16,7 @@ import "channels"
 import "utilities/gist_loader"
 import "utilities/votable"
 import "utilities/commentable"
+import "utilities/subscrible"
 import "answers/answer"
 
 Rails.start()

@@ -1,0 +1,10 @@
+= form_with url: "/search", method: :get, class: 'search-form' do |f|
+  = f.label :query, "Search for:"
+  = f.text_field :query, class: 'search-query'
+  = f.submit "Search"
+end
+  .search-hint.hidden
+    .p = "question:query => search with questions"
+    .p = "answer:query => search with answers"
+    .p = "comment:query => search with comments"
+    .p = "user:query => search with users"

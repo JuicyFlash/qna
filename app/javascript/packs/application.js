@@ -17,7 +17,9 @@ import "utilities/gist_loader"
 import "utilities/votable"
 import "utilities/commentable"
 import "utilities/subscrible"
+import "utilities/search_query_hint"
 import "answers/answer"
+
 
 Rails.start()
 Turbolinks.start()

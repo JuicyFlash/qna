@@ -1,9 +1,8 @@
-= form_with url: "/search", method: :get, class: 'search-form' do |f|
-  = f.label :query, "Search for:"
-  = f.text_field :query, class: 'search-query'
-  = f.submit "Search"
+= form_with url: "/search", method: :get, class: 'search-form d-flex', role: "search" do |f|
+  = f.text_field :query, class: 'search-query form-control me-2', type: "search", placeholder: "Поиск"
+  = f.submit "Search", class: "btn btn-outline-success"
 end
-  .search-hint.hidden
+  .search-hints.hidden
     .p = "question:query => search with questions"
     .p = "answer:query => search with answers"
     .p = "comment:query => search with comments"

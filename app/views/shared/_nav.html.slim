@@ -1,4 +1,11 @@
-nav
-  -if user_signed_in?
-    p= link_to 'Sign out', destroy_user_session_path, method: :delete
-= render 'shared/search'
+nav.navbar.navbar-expand-lg.bg-body-tertiary.text-bg-light.p-3
+  .container
+    .nav-item
+      = link_to "Qna", questions_path, class: "navbar-brand"
+    .nav-item
+      = render 'shared/search'
+  .nav-item
+    -if user_signed_in?
+      p= link_to 'Sign out', destroy_user_session_path, method: :delete
+    -else
+      p= link_to 'Sign in', new_user_session_path, method: :get

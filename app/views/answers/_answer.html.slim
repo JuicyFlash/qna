@@ -1,26 +1,27 @@
 -unless answer.id.nil?
-  p
-  .answer data-answer-id = answer.id
-    .card.w-75.text-bg-light.border-light
-      .card-body
-        = answer.body
-        - if answer.files.attached?
-          - answer.files.find_each do |file|
-            .file data-file-id = file.id
-              p
-              = link_to file.filename.to_s, url_for(file)
-              -if policy(answer).update?
-                = link_to 'Delete file', purge_file_answer_path(answer, file_id: file.id), method: :patch, remote: true
-        .links
-          - answer.links.find_each do |link|
-            = render 'shared/link_show', resource: link
-        -if policy(answer).best?
-          = link_to 'Best',  best_answer_path(answer), method: :patch, remote: true
-        - if policy(answer).update?
-          .container.text-end
-            = link_to 'Delete answer', answer, class: 'btn btn-outline-danger btn-sm', method: :delete, remote: true
-            = link_to 'Edit', '#', class: 'edit-answer-link btn btn-outline-primary btn-sm', data: { answer_id: answer.id }
-      .container
-        = render 'shared/votes', resource: answer
-    = render 'answers/form', resources: { form_model: [answer], form_class: 'hidden', form_html: { id: "edit-answer-#{answer.id}" } }
-    = render 'shared/comments', resources: { commentable: answer, form_url: new_comment(answer), form_class: 'new-comment', form_html: data_commentable_id(answer) }
+  - cache answer do
+    p
+    .answer data-answer-id = answer.id
+      .card.w-75.text-bg-light.border-light
+        .card-body
+          = answer.body
+          - if answer.files.attached?
+            - answer.files.find_each do |file|
+              .file data-file-id = file.id
+                p
+                = link_to file.filename.to_s, url_for(file)
+                -if policy(answer).update?
+                  = link_to 'Delete file', purge_file_answer_path(answer, file_id: file.id), method: :patch, remote: true
+          .links
+            - answer.links.find_each do |link|
+              = render 'shared/link_show', resource: link
+          -if policy(answer).best?
+            = link_to 'Best',  best_answer_path(answer), method: :patch, remote: true
+          - if policy(answer).update?
+            .container.text-end
+              = link_to 'Delete answer', answer, class: 'btn btn-outline-danger btn-sm', method: :delete, remote: true
+              = link_to 'Edit', '#', class: 'edit-answer-link btn btn-outline-primary btn-sm', data: { answer_id: answer.id }
+        .container
+          = render 'shared/votes', resource: answer
+      = render 'answers/form', resources: { form_model: [answer], form_class: 'hidden', form_html: { id: "edit-answer-#{answer.id}" } }
+      = render 'shared/comments', resources: { commentable: answer, form_url: new_comment(answer), form_class: 'new-comment', form_html: data_commentable_id(answer) }

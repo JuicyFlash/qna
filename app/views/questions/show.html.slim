@@ -1,22 +1,23 @@
 .answer-errors
   = render 'shared/errors', resource: @answer
-.question-details.card data-question-id = @question.id
-  .card-header
-    = @question.title
-  .card-body
-    = @question.body
-  - if @question.files.attached?
-    -@question.files.find_each do |file|
-      p= link_to file.filename.to_s, url_for(file)
-  = render 'shared/subscribe', resource: @question
-  .links
-    -@question.links.find_each do |link|
-      = render 'shared/link_show', resource: link
-.answers
-  .best-answer
-    - unless @best_answer.nil?
-      = render @best_answer
-  = render @other_answers
+- cache @question do
+  .question-details.card data-question-id = @question.id
+    .card-header
+      = @question.title
+    .card-body
+      = @question.body
+    - if @question.files.attached?
+      -@question.files.find_each do |file|
+        p= link_to file.filename.to_s, url_for(file)
+    = render 'shared/subscribe', resource: @question
+    .links
+      -@question.links.find_each do |link|
+        = render 'shared/link_show', resource: link
+  .answers
+    .best-answer
+      - unless @best_answer.nil?
+        = render @best_answer
+    = render @other_answers
 .card
   .card-header Your answer
   .card-body

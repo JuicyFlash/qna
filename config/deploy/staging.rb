@@ -3,7 +3,9 @@
 # Defines a single server with a list of roles and multiple properties.
 # You can define all roles on a single server, or split them:
 
-# server "example.com", user: "deploy", roles: %w{app db web}, my_property: :my_value
+server "79.174.93.189", user: "deployer", roles: %w{app db web worker}, primary: true, my_property: :my_value
+set :rails_env, :production
+set :branch, "staging"
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 
@@ -20,9 +22,7 @@
 # role :app, %w{deploy@example.com}, my_property: :my_value
 # role :web, %w{user1@primary.com user2@additional.com}, other_property: :other_value
 # role :db,  %w{deploy@example.com}
-
-
-
+#
 # Configuration
 # =============
 # You can set any configuration variable like in config/deploy.rb
@@ -41,21 +41,23 @@
 #
 # Global options
 # --------------
-#  set :ssh_options, {
-#    keys: %w(/home/user_name/.ssh/id_rsa),
-#    forward_agent: false,
-#    auth_methods: %w(password)
-#  }
-#
+set :ssh_options, {
+  keys: %w(/home/adnikolaev/.ssh/id_rsa),
+  forward_agent: true,
+  auth_methods: %w(publickey password),
+  port: 2222
+}
+
+#   #keys: path_to_pem_key,
 # The server-based syntax can be used to override options:
 # ------------------------------------
-# server "example.com",
-#   user: "user_name",
-#   roles: %w{web app},
+#  server "79.174.93.189",
+#    user: "user_name",
+#    roles: %w{web app},
 #   ssh_options: {
-#     user: "user_name", # overrides user setting above
-#     keys: %w(/home/user_name/.ssh/id_rsa),
-#     forward_agent: false,
-#     auth_methods: %w(publickey password)
-#     # password: "please use keys"
-#   }
+#     # user: "user_name", # overrides user setting above
+#     keys: %w(/home/deployer/.ssh/authorized_keys),
+# forward_agent: false,
+# auth_methods: %w(publickey password)
+# password: "please use keys"
+#}
